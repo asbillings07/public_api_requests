@@ -9,13 +9,13 @@ Refer to the mockups and the comments in the index.html file for an example of w
 */
 
 const gallery = document.getElementById("gallery");
-const searchdiv = document.querySelector("search-container");
+const searchdiv = document.querySelector(".search-container");
 const body = document.querySelector("body");
 const cards = document.querySelectorAll(".card");
 const modalArr = [];
 
 // ------------------------------------------
-//  FETCH FUNCTIONS
+//  FETCH FUNCTION
 // ------------------------------------------
 
 function fetchData(url) {
@@ -42,36 +42,31 @@ function checkStatus(response) {
 }
 
 function setGalleryInfo(data) {
-  data.map(data => {
-    console.log(data);
+  searchPerson(data);
+  data.map(person => {
     const cardDiv = document.createElement("div");
     cardDiv.className = "card";
     gallery.append(cardDiv);
     cardDiv.innerHTML = `<div class="card-img-container">
-      <img class="card-img" src="${data.picture.large}" alt="">
+      <img class="card-img" src="${person.picture.large}" alt="">
   </div>
   <div class="card-info-container">
-      <h3 id="name" class="card-name cap">${data.name.first} ${
-      data.name.last
+      <h3 id="name" class="card-name cap">${person.name.first} ${
+      person.name.last
     }</h3>
-      <p class="card-text">${data.email}</p>
-      <p class="card-text cap">${data.location.city}, ${data.location.state}</p>
+      <p class="card-text">${person.email}</p>
+      <p class="card-text cap">${person.location.city}, ${
+      person.location.state
+    }</p>
   </div>`;
 
     cardDiv.addEventListener("click", () => {
-      createModal(data);
+      createModal(person);
     });
   });
 }
 
-/*
-create all the cards in that loop and append them to the gallery.  Also, inside the loop, you can push the results of the API call into a global storage array.  Then completely outside of your API call, you can create a single modal appended to the body element in the HTML, but without the user-specific info.
-
-And then back inside the loop in your API call, you can add a click handler to the cards that gets the gets the index of the card that was clicked, which is used to grab the correct info out of the storage arrays, which is used to populate the modal with the relevant info.
-
-So basically, what this does is gives a single modal that shows when a card is clicked, and hides when the close modal button is clicked.  And each time the modal is opened, it is updated to have the correct user info.
- */
-
+// creates Modal for each person
 function createModal(person) {
   const modalContainerDiv = document.createElement("div");
   modalContainerDiv.className = "modal-container";
@@ -90,7 +85,7 @@ function createModal(person) {
                         <p class="modal-text cap">${person.location.city}</p>
                         <hr>
                         <p class="modal-text">${person.phone}</p>
-                        <p class="modal-text">${person.location.street},. ${
+                        <p class="modal-text">${person.location.street}., ${
     person.location.state
   }, ${person.location.postcode}</p>
                         <p class="modal-text">Birthday: ${date.toLocaleDateString(
@@ -103,3 +98,40 @@ function createModal(person) {
     modalContainerDiv.remove();
   });
 }
+// searches people
+function searchPerson(people) {
+  searchdiv.innerHTML = `
+  <form action="#" method="get">
+  <input type="search" id="search-input" class="search-input" placeholder="Search...">
+  <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+</form>`;
+
+  const searchInput = document.getElementById("search-input");
+  const searchButton = document.getElementById("search-submit");
+
+  searchButton.addEventListener("click", e => {
+    e.preventDefault();
+    people.filter(person => {
+      const search = person.name;
+      if (
+        search.first.includes(searchInput.value) ||
+        search.last.includes(searchInput.value)
+      ) {
+        console.log(person);
+        createModal(person);
+      } else {
+        alert(
+          "Person not found, please type in more letters of name and try your search again"
+        );
+      }
+    });
+  });
+}
+
+/*
+create all the cards in that loop and append them to the gallery.  Also, inside the loop, you can push the results of the API call into a global storage array.  Then completely outside of your API call, you can create a single modal appended to the body element in the HTML, but without the user-specific info.
+
+And then back inside the loop in your API call, you can add a click handler to the cards that gets the gets the index of the card that was clicked, which is used to grab the correct info out of the storage arrays, which is used to populate the modal with the relevant info.
+
+So basically, what this does is gives a single modal that shows when a card is clicked, and hides when the close modal button is clicked.  And each time the modal is opened, it is updated to have the correct user info.
+ */
