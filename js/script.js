@@ -8,19 +8,25 @@ City or location
 Refer to the mockups and the comments in the index.html file for an example of what info should be displayed on the page and how it should be styled.
 */
 
+const gallery = document.getElementById("gallery");
+const searchdiv = document.querySelector("search-container");
+const modal = document.querySelector("body");
+const modalContainer = document.querySelector("modal-container");
+
 // ------------------------------------------
 //  FETCH FUNCTIONS
 // ------------------------------------------
 
-const fetchData = url => {
+function fetchData(url) {
   return fetch(url) // returns a promise
     .then(checkStatus)
     .then(res => res.json()) // parse data into JSON
     .catch(err => console.log(Error("looks like there was a problem", err))); // handle error
-};
-fetchData("https://randomuser.me/api/?results=12").then(data =>
-  console.log(data)
-);
+}
+
+fetchData("https://randomuser.me/api/?results=12")
+  .then(data => data.results)
+  .then(setGalleryInfo);
 
 // ------------------------------------------
 //  HELPER FUNCTIONS
@@ -32,6 +38,26 @@ function checkStatus(response) {
   } else {
     return Promise.reject(new Error(response.statusText)); // if promise is rejected
   }
+}
+
+function setGalleryInfo(data) {
+  data.map(result => {
+    const cardDiv = document.createElement("div");
+    cardDiv.className = "card";
+    gallery.append(cardDiv);
+    cardDiv.innerHTML = `<div class="card-img-container">
+      <img class="card-img" src="${result.picture.large}" alt="">
+  </div>
+  <div class="card-info-container">
+      <h3 id="name" class="card-name cap">${result.name.first} ${
+      result.name.last
+    }</h3>
+      <p class="card-text">${result.email}</p>
+      <p class="card-text cap">${result.location.city}, ${
+      result.location.state
+    }</p>
+  </div>`;
+  });
 }
 // ------------------------------------------
 //  EVENT LISTENERS
