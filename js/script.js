@@ -10,8 +10,9 @@ Refer to the mockups and the comments in the index.html file for an example of w
 
 const gallery = document.getElementById("gallery");
 const searchdiv = document.querySelector("search-container");
-const modal = document.querySelector("body");
-const modalContainer = document.querySelector("modal-container");
+const body = document.querySelector("body");
+const cards = document.querySelectorAll(".card");
+const modalArr = [];
 
 // ------------------------------------------
 //  FETCH FUNCTIONS
@@ -21,18 +22,18 @@ function fetchData(url) {
   return fetch(url) // returns a promise
     .then(checkStatus)
     .then(res => res.json()) // parse data into JSON
+    .then(data => data.results.map(data => data))
     .catch(err => console.log(Error("looks like there was a problem", err))); // handle error
 }
 
-fetchData("https://randomuser.me/api/?results=12")
-  .then(data => data.results)
-  .then(setGalleryInfo);
+fetchData("https://randomuser.me/api/?results=12&nat=us").then(setGalleryInfo);
 
 // ------------------------------------------
 //  HELPER FUNCTIONS
 // ------------------------------------------
 
 function checkStatus(response) {
+  // checks the response from the promise
   if (response.ok) {
     return Promise.resolve(response); // if promise is fullfilled
   } else {
@@ -41,43 +42,64 @@ function checkStatus(response) {
 }
 
 function setGalleryInfo(data) {
-  data.map(result => {
+  data.map(data => {
+    console.log(data);
     const cardDiv = document.createElement("div");
     cardDiv.className = "card";
     gallery.append(cardDiv);
     cardDiv.innerHTML = `<div class="card-img-container">
-      <img class="card-img" src="${result.picture.large}" alt="">
+      <img class="card-img" src="${data.picture.large}" alt="">
   </div>
   <div class="card-info-container">
-      <h3 id="name" class="card-name cap">${result.name.first} ${
-      result.name.last
+      <h3 id="name" class="card-name cap">${data.name.first} ${
+      data.name.last
     }</h3>
-      <p class="card-text">${result.email}</p>
-      <p class="card-text cap">${result.location.city}, ${
-      result.location.state
-    }</p>
+      <p class="card-text">${data.email}</p>
+      <p class="card-text cap">${data.location.city}, ${data.location.state}</p>
   </div>`;
+
+    cardDiv.addEventListener("click", () => {
+      createModal(data);
+    });
   });
 }
-// ------------------------------------------
-//  EVENT LISTENERS
-// ------------------------------------------
-
-// ------------------------------------------
-//  POST DATA
-// ------------------------------------------
 
 /*
-Create a modal window
-When any part of an employee item in the directory is clicked, a modal window should pop up with the following details displayed:
-Image
-Name
-Email
-City or location
-Cell Number
-Detailed Address, including street name and number, state or country, and post code.
-Birthday
-Make sure there’s a way to close the modal window
-Refer to the mockups and the comments in the index.html file for an example of what info should be displayed on the page and how it should be styled.
+create all the cards in that loop and append them to the gallery.  Also, inside the loop, you can push the results of the API call into a global storage array.  Then completely outside of your API call, you can create a single modal appended to the body element in the HTML, but without the user-specific info.
 
+And then back inside the loop in your API call, you can add a click handler to the cards that gets the gets the index of the card that was clicked, which is used to grab the correct info out of the storage arrays, which is used to populate the modal with the relevant info.
+
+So basically, what this does is gives a single modal that shows when a card is clicked, and hides when the close modal button is clicked.  And each time the modal is opened, it is updated to have the correct user info.
  */
+
+function createModal(person) {
+  const modalContainerDiv = document.createElement("div");
+  modalContainerDiv.className = "modal-container";
+  body.append(modalContainerDiv);
+  const date = new Date(person.dob.date);
+  modalContainerDiv.innerHTML = `<div class="modal">
+                    <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+                    <div class="modal-info-container">
+                        <img class="modal-img" src="${person.picture.large}
+                          
+                        " alt="profile picture">
+                        <h3 id="name" class="modal-name cap"> ${
+                          person.name.first
+                        } ${person.name.last}</h3>
+                        <p class="modal-text">${person.email}</p>
+                        <p class="modal-text cap">${person.location.city}</p>
+                        <hr>
+                        <p class="modal-text">${person.phone}</p>
+                        <p class="modal-text">${person.location.street},. ${
+    person.location.state
+  }, ${person.location.postcode}</p>
+                        <p class="modal-text">Birthday: ${date.toLocaleDateString(
+                          "en-US"
+                        )}</p>
+                    </div>`;
+  modalContainerDiv.style.display = "";
+  const modalbutton = document.getElementById("modal-close-btn");
+  modalbutton.addEventListener("click", () => {
+    modalContainerDiv.remove();
+  });
+}
