@@ -7,6 +7,7 @@ const gallery = document.getElementById("gallery");
 const searchdiv = document.querySelector(".search-container");
 const body = document.querySelector("body");
 const cardDiv = document.getElementsByClassName("card");
+const headTextContainer = document.querySelector(".header-text-container");
 
 // ------------------------------------------
 //  FETCH FUNCTION
@@ -129,6 +130,13 @@ function searchEmployee(cards, field) {
       card.style.display = "";
     } else {
       card.style.display = "none";
+    }
+    if (person.toLowerCase().indexOf(field.value) === -1) {
+      headTextContainer.innerHTML =
+        "<h1>No Results Found, Please try again</h1>";
+    } else {
+      headTextContainer.innerHTML =
+        "<h1>AWESOME STARTUP EMPLOYEE DIRECTORY</h1>";
     }
   });
 }
