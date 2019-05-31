@@ -13,7 +13,7 @@ const searchdiv = document.querySelector(".search-container");
 const body = document.querySelector("body");
 const cardDiv = document.getElementsByClassName("card");
 const cardInfo = document.getElementsByClassName("card-info-container");
-const textContainer = document.querySelector(".header-text-container");
+
 // ------------------------------------------
 //  FETCH FUNCTION
 // ------------------------------------------
@@ -42,7 +42,7 @@ function checkStatus(response) {
 }
 
 function setGalleryInfo(data) {
-  data.map(person => {
+  data.map((person, index) => {
     const cardDiv = document.createElement("div");
 
     cardDiv.className = "card";
@@ -59,16 +59,18 @@ function setGalleryInfo(data) {
       <p class="card-text cap">${person.location.city}, ${
       person.location.state
     }</p>
-  </div>`;
+  </div>
+  
+  `;
 
     cardDiv.addEventListener("click", () => {
-      createModal(person);
+      createModal(person, index);
     });
   });
 }
 
 // creates Modal for each person
-function createModal(person) {
+function createModal(person, index) {
   const modalContainerDiv = document.createElement("div");
   modalContainerDiv.className = "modal-container";
   body.append(modalContainerDiv);
@@ -92,55 +94,71 @@ function createModal(person) {
                         <p class="modal-text">Birthday: ${date.toLocaleDateString(
                           "en-US"
                         )}</p>
-                    </div>`;
-  modalContainerDiv.style.display = "";
-  const modalbutton = document.getElementById("modal-close-btn");
-  modalbutton.addEventListener("click", () => {
+                    </div>
+                    <div class="modal-btn-container">
+<button type="button" id="modal-prev" class="modal-prev btn">
+  Prev
+</button>
+<button type="button" id="modal-next" class="modal-next btn">
+  Next
+</button>
+</div>
+</div>
+                    `;
+
+  const nextButton = document.getElementById("modal-next");
+  const prevButton = document.getElementById("modal-prev");
+
+  nextButton.addEventListener("click", e => {
+    if (index >= 0 && index < 11) {
+      console.log(index + 1);
+    }
+  });
+  prevButton.addEventListener("click", e => {
+    if (index > 0 && index <= 11) {
+      console.log(index - 1);
+    }
+  });
+
+  // closes modal when open
+  const CloseModalbutton = document.getElementById("modal-close-btn");
+  CloseModalbutton.addEventListener("click", () => {
     modalContainerDiv.remove();
   });
 }
 // searches for person
 function searchEmployee(cards, field) {
   cards.filter(card => {
-    const person = card.querySelector("#name").textContent;
-
-    if (person.includes(field.value.toLowerCase())) {
+    const person = card.querySelector("#name").innerHTML;
+    console.log(person);
+    if (person.toLowerCase().indexOf(field.value) > -1) {
       card.style.display = "";
     } else {
       card.style.display = "none";
-      textContainer.innerHTML = `<h3>Sorry No Employee Matches Found, please try again</h3>`;
-    }
-
-    if (field.value === "") {
-      card.style.display = "";
-      textContainer.innerHTML = `<h3>AWESOME STARTUP EMPLOYEE DIRECTORY
-      </h3>`;
     }
   });
 }
 
 searchdiv.innerHTML = `
   <form action="#" method="get">
-  <input type="search" id="search-input" class="search-input" placeholder="Search...">
+  <input type="search" id="search-input" class="search-input" placeholder="Search and press enter...">
   <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
 </form>`;
 
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-submit");
+searchInput.focus();
 
 // ------------------------------------------
 //  EVENT LISTENERS
 // ------------------------------------------
+// search on click
 searchButton.addEventListener("click", e => {
   e.preventDefault();
   searchEmployee([...cardDiv], searchInput);
 });
-
-searchInput.addEventListener("click", () => {
+// search on keyup
+searchInput.addEventListener("onkeyup", e => {
+  console.log(e.target);
   searchEmployee([...cardDiv], searchInput);
 });
-
-function resetField() {
-  if (searchInput.value === "") {
-  }
-}
