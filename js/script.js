@@ -11,9 +11,9 @@ Refer to the mockups and the comments in the index.html file for an example of w
 const gallery = document.getElementById("gallery");
 const searchdiv = document.querySelector(".search-container");
 const body = document.querySelector("body");
-const cards = document.querySelectorAll(".card");
-const modalArr = [];
-
+const cardDiv = document.getElementsByClassName("card");
+const cardInfo = document.getElementsByClassName("card-info-container");
+const textContainer = document.querySelector(".header-text-container");
 // ------------------------------------------
 //  FETCH FUNCTION
 // ------------------------------------------
@@ -42,10 +42,11 @@ function checkStatus(response) {
 }
 
 function setGalleryInfo(data) {
-  searchPerson(data);
   data.map(person => {
     const cardDiv = document.createElement("div");
+
     cardDiv.className = "card";
+
     gallery.append(cardDiv);
     cardDiv.innerHTML = `<div class="card-img-container">
       <img class="card-img" src="${person.picture.large}" alt="">
@@ -98,40 +99,48 @@ function createModal(person) {
     modalContainerDiv.remove();
   });
 }
-// searches people
-function searchPerson(people) {
-  searchdiv.innerHTML = `
+// searches for person
+function searchEmployee(cards, field) {
+  cards.filter(card => {
+    const person = card.querySelector("#name").textContent;
+
+    if (person.includes(field.value.toLowerCase())) {
+      card.style.display = "";
+    } else {
+      card.style.display = "none";
+      textContainer.innerHTML = `<h3>Sorry No Employee Matches Found, please try again</h3>`;
+    }
+
+    if (field.value === "") {
+      card.style.display = "";
+      textContainer.innerHTML = `<h3>AWESOME STARTUP EMPLOYEE DIRECTORY
+      </h3>`;
+    }
+  });
+}
+
+searchdiv.innerHTML = `
   <form action="#" method="get">
   <input type="search" id="search-input" class="search-input" placeholder="Search...">
   <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
 </form>`;
 
-  const searchInput = document.getElementById("search-input");
-  const searchButton = document.getElementById("search-submit");
+const searchInput = document.getElementById("search-input");
+const searchButton = document.getElementById("search-submit");
 
-  searchButton.addEventListener("click", e => {
-    e.preventDefault();
-    people.filter(person => {
-      const search = person.name;
-      if (
-        search.first.includes(searchInput.value) ||
-        search.last.includes(searchInput.value)
-      ) {
-        console.log(person);
-        createModal(person);
-      } else {
-        alert(
-          "Person not found, please type in more letters of name and try your search again"
-        );
-      }
-    });
-  });
+// ------------------------------------------
+//  EVENT LISTENERS
+// ------------------------------------------
+searchButton.addEventListener("click", e => {
+  e.preventDefault();
+  searchEmployee([...cardDiv], searchInput);
+});
+
+searchInput.addEventListener("click", () => {
+  searchEmployee([...cardDiv], searchInput);
+});
+
+function resetField() {
+  if (searchInput.value === "") {
+  }
 }
-
-/*
-create all the cards in that loop and append them to the gallery.  Also, inside the loop, you can push the results of the API call into a global storage array.  Then completely outside of your API call, you can create a single modal appended to the body element in the HTML, but without the user-specific info.
-
-And then back inside the loop in your API call, you can add a click handler to the cards that gets the gets the index of the card that was clicked, which is used to grab the correct info out of the storage arrays, which is used to populate the modal with the relevant info.
-
-So basically, what this does is gives a single modal that shows when a card is clicked, and hides when the close modal button is clicked.  And each time the modal is opened, it is updated to have the correct user info.
- */
