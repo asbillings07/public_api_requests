@@ -8,6 +8,7 @@ const searchdiv = document.querySelector(".search-container");
 const body = document.querySelector("body");
 const cardDiv = document.getElementsByClassName("card");
 const headTextContainer = document.querySelector(".header-text-container");
+let modalDivs;
 
 // ------------------------------------------
 //  FETCH FUNCTION
@@ -36,8 +37,8 @@ function checkStatus(response) {
   }
 }
 
-function setGalleryInfo(data) {
-  data.map((person, index) => {
+function setGalleryInfo(people) {
+  people.map((person, index) => {
     const cardDiv = document.createElement("div");
 
     cardDiv.className = "card";
@@ -58,13 +59,14 @@ function setGalleryInfo(data) {
   
   `;
     cardDiv.addEventListener("click", () => {
-      createModal(person, index);
+      createModal(people, index);
     });
   });
 }
 
 // creates Modal for each person
-function createModal(person, index) {
+function createModal(people, index) {
+  const person = people[index];
   const modalContainerDiv = document.createElement("div");
   modalContainerDiv.className = "modal-container";
   gallery.append(modalContainerDiv);
@@ -107,17 +109,26 @@ function createModal(person, index) {
   });
   const nextButton = document.getElementById("modal-next");
   const prevButton = document.getElementById("modal-prev");
-  nextButton.addEventListener("click", e => {
-    if (index >= 0 && index < 11) {
+  console.log(index < people.length - 1);
+  console.log(index);
+  console.log(people);
+  if (index < people.length - 1) {
+    nextButton.addEventListener("click", e => {
       modalContainerDiv.remove();
-      gallery.append(modalContainerDiv[index++]);
-    }
-  });
-  prevButton.addEventListener("click", e => {
-    if (index > 0 && index <= 11) {
-      index--;
-    }
-  });
+      createModal(people, index + 1);
+    });
+  } else {
+    nextButton.disabled = true;
+  }
+  if (index > 0) {
+    prevButton.addEventListener("click", e => {
+      modalContainerDiv.remove();
+      createModal(people, index - 1);
+      nextButton.disabled = false;
+    });
+  } else if (index === 0) {
+    prevButton.disabled = true;
+  }
 }
 
 // searches for person

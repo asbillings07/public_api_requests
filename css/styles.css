@@ -209,6 +209,10 @@ header h1 {
   outline: none;
 }
 
+.modal-btn-container .btn:disabled {
+  background-color: red;
+}
+
 /* ===================================== 
    Media Queries
 ======================================== */
