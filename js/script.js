@@ -12,7 +12,6 @@ const gallery = document.getElementById("gallery");
 const searchdiv = document.querySelector(".search-container");
 const body = document.querySelector("body");
 const cardDiv = document.getElementsByClassName("card");
-const cardInfo = document.getElementsByClassName("card-info-container");
 
 // ------------------------------------------
 //  FETCH FUNCTION
@@ -62,7 +61,6 @@ function setGalleryInfo(data) {
   </div>
   
   `;
-
     cardDiv.addEventListener("click", () => {
       createModal(person, index);
     });
@@ -106,26 +104,27 @@ function createModal(person, index) {
 </div>
                     `;
 
-  const nextButton = document.getElementById("modal-next");
-  const prevButton = document.getElementById("modal-prev");
-
-  nextButton.addEventListener("click", e => {
-    if (index >= 0 && index < 11) {
-      console.log(index + 1);
-    }
-  });
-  prevButton.addEventListener("click", e => {
-    if (index > 0 && index <= 11) {
-      console.log(index - 1);
-    }
-  });
-
   // closes modal when open
   const CloseModalbutton = document.getElementById("modal-close-btn");
   CloseModalbutton.addEventListener("click", () => {
     modalContainerDiv.remove();
   });
+  const nextButton = document.getElementById("modal-next");
+  const prevButton = document.getElementById("modal-prev");
+  nextButton.addEventListener("click", e => {
+    if (index >= 0 && index < 11) {
+      modalContainerDiv.remove();
+      const i = index++;
+      createModal(person, i);
+    }
+  });
+  prevButton.addEventListener("click", e => {
+    if (index > 0 && index <= 11) {
+      index--;
+    }
+  });
 }
+
 // searches for person
 function searchEmployee(cards, field) {
   cards.filter(card => {
