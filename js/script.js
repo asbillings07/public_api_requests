@@ -136,12 +136,12 @@ function searchEmployee(cards, field) {
   cards.filter(card => {
     const person = card.querySelector("#name").innerHTML;
     console.log(person);
-    if (person.toLowerCase().indexOf(field.value) > -1) {
+    if (person.toLowerCase().indexOf(field.value.toLowerCase()) > -1) {
       card.style.display = "";
     } else {
       card.style.display = "none";
     }
-    if (person.toLowerCase().indexOf(field.value) === -1) {
+    if (person.toLowerCase().indexOf(field.value.toLowerCase()) === -1) {
       headTextContainer.innerHTML =
         "<h1>No Results Found, Please try again</h1>";
     } else {
