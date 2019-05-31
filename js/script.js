@@ -67,7 +67,7 @@ function setGalleryInfo(data) {
 function createModal(person, index) {
   const modalContainerDiv = document.createElement("div");
   modalContainerDiv.className = "modal-container";
-  body.append(modalContainerDiv);
+  gallery.append(modalContainerDiv);
   const date = new Date(person.dob.date);
   modalContainerDiv.innerHTML = `<div class="modal">
                     <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
@@ -110,8 +110,7 @@ function createModal(person, index) {
   nextButton.addEventListener("click", e => {
     if (index >= 0 && index < 11) {
       modalContainerDiv.remove();
-      const i = index++;
-      createModal(person, i);
+      gallery.append(modalContainerDiv[index++]);
     }
   });
   prevButton.addEventListener("click", e => {
