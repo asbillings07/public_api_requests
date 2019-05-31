@@ -28,13 +28,18 @@ header {
   max-width: 1180px;
   margin: auto;
 }
-
+.banner-img {
+  width: 1278px;
+  height: 275px;
+  box-shadow: 10px 10px;
+}
 header h1 {
   font-size: 1.25em;
-  color: rgba(50, 50, 50, 0.9);
+  color: black;
   margin-top: 35px;
+  margin-left: -9px;
+  text-shadow: 5px 5px 10px darkgrey;
 }
-
 .search-input {
   padding: 0.4rem 1rem;
   border: 1px solid rgba(200, 200, 200, 0.9);
@@ -96,6 +101,7 @@ header h1 {
   border: 1px solid rgba(50, 50, 50, 0.3);
   transition: 0.4s ease-out;
   overflow: hidden;
+  box-shadow: 10px 10px;
 }
 
 .card-img {
