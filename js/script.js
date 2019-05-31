@@ -1,11 +1,6 @@
 /***
- * Get and display 12 random users
-With information provided from The Random User Generator API, send a single request to the API, and use the response data to display 12 users, along with some basic information for each:
-Image
-First and Last Name
-Email
-City or location
-Refer to the mockups and the comments in the index.html file for an example of what info should be displayed on the page and how it should be styled.
+Public-Api-Requests
+by Aaron Billings
 */
 
 const gallery = document.getElementById("gallery");
