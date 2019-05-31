@@ -109,9 +109,7 @@ function createModal(people, index) {
   });
   const nextButton = document.getElementById("modal-next");
   const prevButton = document.getElementById("modal-prev");
-  console.log(index < people.length - 1);
-  console.log(index);
-  console.log(people);
+
   if (index < people.length - 1) {
     nextButton.addEventListener("click", e => {
       modalContainerDiv.remove();
