@@ -140,8 +140,7 @@ function searchEmployee(cards, field) {
       card.style.display = "none";
     }
     if (person.toLowerCase().indexOf(field.value.toLowerCase()) === -1) {
-      headTextContainer.innerHTML =
-        "<h1>No Results Found, Please try again</h1>";
+      headTextContainer.innerHTML = "";
     } else {
       headTextContainer.innerHTML =
         "<h1>AWESOME STARTUP EMPLOYEE DIRECTORY</h1>";
