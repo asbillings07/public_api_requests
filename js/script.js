@@ -48,7 +48,7 @@ function setGalleryInfo(people) {
       <img class="card-img" src="${person.picture.large}" alt="">
   </div>
   <div class="card-info-container">
-      <h3 id="name" class="card-name cap">${person.name.first} ${
+<h3 id="name" class="card-name cap">${person.name.first} ${
       person.name.last
     }</h3>
       <p class="card-text">${person.email}</p>
@@ -92,14 +92,14 @@ function createModal(people, index) {
                         )}</p>
                     </div>
                     <div class="modal-btn-container">
-<button type="button" id="modal-prev" class="modal-prev btn">
-  Prev
-</button>
-<button type="button" id="modal-next" class="modal-next btn">
-  Next
-</button>
-</div>
-</div>
+                    <button type="button" id="modal-prev" class="modal-prev btn">
+                      Prev
+                    </button>
+                    <button type="button" id="modal-next" class="modal-next btn">
+                      Next
+                    </button>
+                    </div>
+                    </div>
                     `;
 
   // closes modal when open
