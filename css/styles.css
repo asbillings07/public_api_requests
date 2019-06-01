@@ -101,7 +101,7 @@ header h1 {
   border: 1px solid rgba(50, 50, 50, 0.3);
   transition: 0.4s ease-out;
   overflow: hidden;
-  box-shadow: 10px 10px;
+  box-shadow: 10px 10px #6c7c82;
 }
 
 .card-img {
