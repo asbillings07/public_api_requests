@@ -22,7 +22,7 @@ function fetchData(url) {
     .catch(err => console.log(Error("looks like there was a problem", err))); // handle error
 }
 
-fetchData("https://randomuser.me/api/?results=18&nat=us").then(setGalleryInfo);
+fetchData("https://randomuser.me/api/?results=12&nat=us").then(setGalleryInfo);
 
 // ------------------------------------------
 //  HELPER FUNCTIONS
