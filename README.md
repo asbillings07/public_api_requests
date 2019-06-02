@@ -6,7 +6,7 @@
 
 Employee Directory is created from a public API that randomly chooses employees
 
-You can view this site live at the link here:
+You can view this site live at the link here: https://musing-pasteur-c6caa4.netlify.com/
 
 ## Languages Used
 
