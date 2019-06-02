@@ -4,9 +4,10 @@
 
 ## About This Project
 
-Employee Directory is created from a public API that randomly chooses employees
+Get to know more about your co-workers with Employee Directory! This is a site where you can view, search different employees in a company and learn more about them. This site pulls in an API from https://randomuser.me This site is a free and easy to use service to generate random user data for application testing. 
 
-You can view this site live at the link here:
+
+You can view this site live at the link here: https://musing-pasteur-c6caa4.netlify.com/
 
 ## Languages Used
 
@@ -24,7 +25,7 @@ To use this directory, download the project files and load the index.html file i
 ## Usage
 
 ```
-Once you load the site you will see a banner with a number of employees.
+Once you load the site you will see a banner with 12 of employees.
 ```
 
 ![main screen](https://user-images.githubusercontent.com/28825784/58735135-7a97a580-83c7-11e9-9f62-ea798e4b8c36.png)
