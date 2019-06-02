@@ -84,7 +84,7 @@ function createModal(people, index) {
                         <p class="modal-text cap">${person.location.city}</p>
                         <hr>
                         <p class="modal-text">${person.phone}</p>
-                        <p class="modal-text">${person.location.street}., ${
+                        <p class="modal-text cap">${person.location.street}., ${
     person.location.state
   }, ${person.location.postcode}</p>
                         <p class="modal-text">Birthday: ${date.toLocaleDateString(
